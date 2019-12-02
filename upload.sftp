@@ -1,0 +1,6 @@
+cd apps
+cd scales
+put index.html
+put scales.js
+put scales.css
+exit
