@@ -1,0 +1,31 @@
+body {
+  font-family: sans-serif;
+}
+
+.scaleLabel {
+  height: 90vh;
+  text-align: center;
+  position: relative;
+}
+
+.scaleName {
+  font-size: 2em;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.scaleSelector {
+  height: 10vh;
+}
+
+.harmonySelector {
+  width: 40%;
+}
+
+.nextScaleButton {
+  width: 60%;
+}
