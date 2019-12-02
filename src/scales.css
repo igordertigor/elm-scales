@@ -18,8 +18,11 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.scaleSelector {
-  height: 10vh;
+.scaleSelectors {
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
 }
 
 .harmonySelector {
@@ -27,5 +30,5 @@ body {
 }
 
 .nextScaleButton {
-  width: 60%;
+  width: 55%;
 }
