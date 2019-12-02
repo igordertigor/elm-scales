@@ -61,12 +61,16 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div []
-        [ select
-            [ onInput SelectHarmony ]
-            [ viewOption Major
+        [ div [ class "scaleLabel" ]
+            [ div [ class "scaleName" ] [ text (scale2String model.harmony model.scale) ]
             ]
-        , button [ onClick RandomScale ] [ text "Next Scale" ]
-        , div [] [ text (scale2String model.harmony model.scale) ]
+        , div [ class "scaleSelectors" ]
+            [ select
+                [ onInput SelectHarmony, class "harmonySelector" ]
+                [ viewOption Major
+                ]
+            , button [ onClick RandomScale, class "nextScaleButton" ] [ text "Next Scale" ]
+            ]
         ]
 
 
