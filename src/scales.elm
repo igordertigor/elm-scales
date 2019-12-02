@@ -16,38 +16,10 @@ main =
         }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( Model Major { key = C, sign = Unsigned, mode = 1 }
-    , Random.generate NextScale randomScale
-    )
-
-
 type Msg
     = NextScale Scale
     | RandomScale
     | SelectHarmony String
-
-
-type Harmony
-    = Major
-
-
-fromString : String -> Harmony
-fromString s =
-    case s of
-        "Major" ->
-            Major
-
-        _ ->
-            Major
-
-
-type alias Scale =
-    { key : Key
-    , sign : Sign
-    , mode : Int
-    }
 
 
 type alias Model =
@@ -56,40 +28,11 @@ type alias Model =
     }
 
 
-type Key
-    = C
-    | D
-    | E
-    | F
-    | G
-    | A
-    | B
-
-
-type Sign
-    = Flat
-    | Sharp
-    | Unsigned
-
-
-randomScale : Random.Generator Scale
-randomScale =
-    Random.map3 Scale randomKey randomSign randomMode
-
-
-randomKey : Random.Generator Key
-randomKey =
-    Random.uniform C [ D, E, F, G, A, B ]
-
-
-randomSign : Random.Generator Sign
-randomSign =
-    Random.uniform Unsigned [ Sharp, Flat ]
-
-
-randomMode : Random.Generator Int
-randomMode =
-    Random.int 1 7
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Model Major { key = C, sign = Unsigned, mode = 1 }
+    , Random.generate NextScale randomScale
+    )
 
 
 update msg model =
@@ -105,7 +48,7 @@ update msg model =
             )
 
         SelectHarmony harmony ->
-            ( { model | harmony = fromString harmony }
+            ( { model | harmony = string2Harmony harmony }
             , Random.generate NextScale randomScale
             )
 
@@ -127,11 +70,22 @@ view model =
         ]
 
 
-viewOption : Harmony -> Html Msg
-viewOption harmony =
-    option
-        [ value <| harmony2String harmony ]
-        [ text <| harmony2String harmony ]
+
+-- Harmony
+
+
+type Harmony
+    = Major
+
+
+string2Harmony : String -> Harmony
+string2Harmony s =
+    case s of
+        "Major" ->
+            Major
+
+        _ ->
+            Major
 
 
 harmony2String : Harmony -> String
@@ -141,16 +95,44 @@ harmony2String harmony =
             "Major"
 
 
-mode2String : Harmony -> Int -> String
-mode2String harmony mode =
-    case harmony of
-        Major ->
-            getFromList [ "", "-7", "sus ♭9", "♯4", "7", "♭6", "∅" ] mode ""
+
+-- Scale
+
+
+type alias Scale =
+    { key : Key
+    , sign : Sign
+    , mode : Int
+    }
+
+
+randomScale : Random.Generator Scale
+randomScale =
+    Random.map3 Scale randomKey randomSign randomMode
 
 
 scale2String : Harmony -> Scale -> String
 scale2String harmony scale =
     key2String scale ++ " " ++ mode2String harmony scale.mode
+
+
+
+-- Key
+
+
+type Key
+    = C
+    | D
+    | E
+    | F
+    | G
+    | A
+    | B
+
+
+randomKey : Random.Generator Key
+randomKey =
+    Random.uniform C [ D, E, F, G, A, B ]
 
 
 key2String : Scale -> String
@@ -183,6 +165,17 @@ baseKey2String key =
             "B"
 
 
+type Sign
+    = Flat
+    | Sharp
+    | Unsigned
+
+
+randomSign : Random.Generator Sign
+randomSign =
+    Random.uniform Unsigned [ Sharp, Flat ]
+
+
 sign2String : Sign -> String
 sign2String sign =
     case sign of
@@ -194,6 +187,37 @@ sign2String sign =
 
         Sharp ->
             "♯"
+
+
+
+-- Mode (is Int)
+
+
+randomMode : Random.Generator Int
+randomMode =
+    Random.int 1 7
+
+
+mode2String : Harmony -> Int -> String
+mode2String harmony mode =
+    case harmony of
+        Major ->
+            getFromList [ "", "-7", "sus ♭9", "♯4", "7", "♭6", "∅" ] mode ""
+
+
+
+-- View helpers
+
+
+viewOption : Harmony -> Html Msg
+viewOption harmony =
+    option
+        [ value <| harmony2String harmony ]
+        [ text <| harmony2String harmony ]
+
+
+
+-- Other helpers
 
 
 getFromList : List String -> Int -> String -> String
