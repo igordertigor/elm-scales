@@ -68,6 +68,7 @@ view model =
             [ select
                 [ onInput SelectHarmony, class "harmonySelector" ]
                 [ viewOption Major
+                , viewOption MelodicMinor
                 ]
             , button [ onClick RandomScale, class "nextScaleButton" ] [ text "Next Scale" ]
             ]
@@ -80,6 +81,7 @@ view model =
 
 type Harmony
     = Major
+    | MelodicMinor
 
 
 string2Harmony : String -> Harmony
@@ -87,6 +89,9 @@ string2Harmony s =
     case s of
         "Major" ->
             Major
+
+        "Melodic Minor" ->
+            MelodicMinor
 
         _ ->
             Major
@@ -97,6 +102,9 @@ harmony2String harmony =
     case harmony of
         Major ->
             "Major"
+
+        MelodicMinor ->
+            "Melodic Minor"
 
 
 
@@ -207,6 +215,9 @@ mode2String harmony mode =
     case harmony of
         Major ->
             getFromList [ "", "-7", "sus ♭9", "♯4", "7", "♭6", "∅" ] mode ""
+
+        MelodicMinor ->
+            getFromList [ "⍙", "sus ♭9", "⍙", "sus ♭9", "⍙", "sus ♭9", "⍙", "sus ♭9" ] mode ""
 
 
 
