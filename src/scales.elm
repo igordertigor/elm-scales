@@ -214,7 +214,7 @@ mode2String : Harmony -> Int -> String
 mode2String harmony mode =
     case harmony of
         Major ->
-            getFromList [ "", "-7", "sus ♭9", "♯4", "7", "♭6", "∅" ] mode ""
+            getFromList [ "", "-7", "sus ♭9", "♯4", "7", "-♭6", "∅" ] mode ""
 
         MelodicMinor ->
             getFromList [ "⍙", "sus ♭9", "Δ♯5", "7♯11", "⍙/5", "∅", "7alt" ] mode ""
